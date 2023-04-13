@@ -1,47 +1,84 @@
 import React from "react";
-import Card from "./components/Card";
+import { Routes, Route } from "react-router-dom";
+import axios from "axios";
 import Header from "./components/Header";
 import RightSide from "./components/RightSide";
+import Home from "./pages/Home";
+import Favorites from "./pages/Favorites";
 
 function App() {
   const [items, setItems] = React.useState([]);
+  const [cartItems, setCartItems] = React.useState([]);
+  const [favorites, setFavorites] = React.useState([]);
+  const [searchValue, setsearchValue] = React.useState("");
   const [cartOpened, setCartOpened] = React.useState(false);
 
+  // https://6436b5c23e4d2b4a12d99c95.mockapi.io/favorites
+
   React.useEffect(() => {
-    fetch("https://642d4369bf8cbecdb40169ba.mockapi.io/items")
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setItems(json);
-      });
+    axios.get("https://642d4369bf8cbecdb40169ba.mockapi.io/items").then((res) => {
+      setItems(res.data);
+    });
+
+    axios.get("https://642d4369bf8cbecdb40169ba.mockapi.io/cart").then((res) => {
+      setCartItems(res.data);
+    });
+
+    axios.get("https://6436b5c23e4d2b4a12d99c95.mockapi.io/favorites").then((res) => {
+      setFavorites(res.data);
+    });
   }, []);
+
+  const onAddToCart = (obj) => {
+    axios.post("https://642d4369bf8cbecdb40169ba.mockapi.io/cart", obj);
+    setCartItems((prev) => [...prev, obj]);
+  };
+
+  const onRemoveItem = (id) => {
+    axios.delete(`https://642d4369bf8cbecdb40169ba.mockapi.io/cart/${id}`);
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const onAddToFavorite = async (obj) => {
+    try {
+      if (favorites.find((favObj) => favObj.id === obj.id)) {
+        axios.delete(`https://6436b5c23e4d2b4a12d99c95.mockapi.io/favorites/${obj.id}`);
+      } else {
+        const { data } = await axios.post("https://6436b5c23e4d2b4a12d99c95.mockapi.io/favorites", obj);
+        setFavorites((prev) => [...prev, data]);
+      }
+    } catch (error) {
+      alert("Не удалось добавить в фавориты");
+    }
+  };
+
+  const onChangeSearchItem = (event) => {
+    setsearchValue(event.target.value);
+  };
 
   return (
     <div className="wrapper clear">
-      {cartOpened && <RightSide onClose={() => setCartOpened(false)} />}
+      {cartOpened && <RightSide items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />}
       <Header onClickCart={() => setCartOpened(true)} />
-      <div className="content p-40">
-        <div className="d-flex align-center justify-between mb-40">
-          <h1>Все кроссовки</h1>
-          <div className="search-block d-flex">
-            <img src="/img/search.svg" alt="Search" />
-            <input placeholder="Поиск ..." />
-          </div>
-        </div>
 
-        <div className="d-flex flex-wrap">
-          {items.map((obj) => (
-            <Card
-              title={obj.title}
-              price={obj.price}
-              imgUrl={obj.imgUrl}
-              onFavorite={() => console.log("Добавили в закладки")}
-              onPlus={() => console.log("Нажали плюс")}
+      <Routes>
+        <Route
+          path="/"
+          exact
+          element={
+            <Home
+              items={items}
+              searchValue={searchValue}
+              setsearchValue={setsearchValue}
+              onChangeSearchItem={onChangeSearchItem}
+              onAddToFavorite={onAddToFavorite}
+              onAddToCart={onAddToCart}
             />
-          ))}
-        </div>
-      </div>
+          }
+        />
+
+        <Route path="/favorites" exact element={<Favorites items={favorites} onAddToFavorite={onAddToFavorite} />} />
+      </Routes>
     </div>
   );
 }
