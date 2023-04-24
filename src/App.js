@@ -166,13 +166,6 @@ function App() {
       value={{ items, cartItems, favorites, isItemAdded, onAddToFavorite, onAddToCart, setCartOpened, setCartItems }}
     >
       <div className="wrapper clear">
-        <RightSide
-          items={cartItems}
-          onClose={() => setCartOpened(false)}
-          onRemove={(id) => onRemoveItem(id)}
-          opened={cartOpened}
-        />
-
         <Header onClickCart={() => setCartOpened(true)} />
 
         <Routes>
@@ -196,6 +189,13 @@ function App() {
           <Route path="/favorites" exact element={<Favorites />} />
           <Route path="/orders" exact element={<Orders />} />
         </Routes>
+
+        <RightSide
+          items={cartItems}
+          onClose={() => setCartOpened(false)}
+          onRemove={(id) => onRemoveItem(id)}
+          opened={cartOpened}
+        />
       </div>
     </AppContext.Provider>
   );

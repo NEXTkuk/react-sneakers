@@ -37,29 +37,35 @@ header {
 
 .cartEmpty {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex: 1;
+  text-align: center;
 
   p {
     width: 280px;
     line-height: 24px;
   }
+}
 
-  .greenButton {
-    width: 245px;
-    margin-top: 20px;
+.greenButton {
+  width: 245px;
+  margin-top: 20px;
 
-    &:hover {
-      img {
-        transform: rotate(180deg) translateX(3px);
-      }
-    }
-
+  &:hover {
     img {
-      position: relative;
-      top: 1px;
-      transform: rotate(180deg);
-      margin-right: 15px;
-      transition: transform 0.15s ease-in-out;
+      transform: rotate(180deg) translateX(3px);
     }
+  }
+
+  img {
+    position: relative;
+    top: 1px;
+    transform: rotate(180deg);
+    margin-right: 15px;
+    transition: transform 0.15s ease-in-out;
   }
 }
 

@@ -15,7 +15,7 @@ function Favorites() {
       {favorites.length === 0 ? (
         <div className="d-flex justify-center flex-wrap ">
           <div className={"d-flex justify-center flex-column align-center"}>
-            <img src="/public/img/empty-favorites.svg" alt="Грустно" width={70} height={70} />
+            <img src="img/empty-favorites.svg" alt="Грустно" width={70} height={70} />
 
             <h2>{"Закладок нет :("}</h2>
             <div className="no-item opacity-6 ">{"Вы ничего не добавляли в закладки"}</div>
