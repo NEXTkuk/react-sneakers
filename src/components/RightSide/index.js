@@ -52,9 +52,10 @@ function RightSide({ onClose, onRemove, items = [], opened }) {
     //   onClick={(e) => e.target.className === "overlayVisible" && onClose()}
     //   onClick={console.log("ok")}
     // >
+
     <div
       className={`${styles.overlay} ${opened ? styles.overlayVisible : "overlay"}`}
-      onClick={(e) => e.target.className === "overlay visible" && onClose()}
+      onClick={(e) => e.target.className.includes("overlayVisible") && onClose()}
     >
       <div className={styles.rightSide}>
         <h2 className="d-flex justify-between mb-30">

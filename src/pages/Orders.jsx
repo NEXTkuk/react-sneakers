@@ -22,7 +22,7 @@ function Orders() {
         setOrders(data);
 
         const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        await delay(1000);
+        await delay(500);
         setIsLoading(false);
 
         // setIsLoading(false);

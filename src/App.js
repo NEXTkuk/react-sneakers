@@ -42,8 +42,8 @@ function App() {
         const localCart = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [];
         const localFavorites = localStorage.getItem("favorites") ? JSON.parse(localStorage.getItem("favorites")) : [];
 
-        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        await delay(1000);
+        // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        // await delay(500);
         setIsLoading(false);
 
         setFavorites(localFavorites);
@@ -178,7 +178,12 @@ function App() {
       }}
     >
       <div className="wrapper clear">
-        <Header onClickCart={() => setCartOpened(true)} />
+        <Header
+          onClickCart={() => {
+            setCartOpened(true);
+            document.body.style.overflow = "hidden";
+          }}
+        />
 
         <Routes>
           <Route
@@ -204,7 +209,10 @@ function App() {
 
         <RightSide
           items={cartItems}
-          onClose={() => setCartOpened(false)}
+          onClose={() => {
+            setCartOpened(false);
+            document.body.style.overflow = "visible";
+          }}
           onRemove={(id) => onRemoveItem(id)}
           opened={cartOpened}
         />
