@@ -17,18 +17,29 @@ function RightSide({ onClose, onRemove, items = [], opened }) {
   const onClickOrder = async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.post("https://6436b5c23e4d2b4a12d99c95.mockapi.io/orders", {
-        items: cartItems,
-      });
-      setOrderId(data.id);
-      setIsOrderComplete(true);
+      // const { data } = await axios.post("https://6436b5c23e4d2b4a12d99c95.mockapi.io/orders", {
+      //   items: cartItems,
+      // });
+
+      const orders = localStorage.getItem("orders") ? JSON.parse(localStorage.getItem("orders")) : [];
+      // const newOrder = [...orders, cartItems];
+
+      setOrderId(orders.length + 1);
+
+      const newOrder = [...orders, cartItems];
+      localStorage.setItem("orders", JSON.stringify(newOrder));
+
+      // setOrderId(data.id);
+      // setIsOrderComplete(true);
+
+      await delay(1000);
       setCartItems([]);
 
-      for (let i = 0; i < cartItems.length; i++) {
-        const item = cartItems[i];
-        await axios.delete("https://642d4369bf8cbecdb40169ba.mockapi.io/cart/" + item.id);
-        await delay(1000);
-      }
+      // for (let i = 0; i < cartItems.length; i++) {
+      //   const item = cartItems[i];
+      //   await axios.delete("https://642d4369bf8cbecdb40169ba.mockapi.io/cart/" + item.id);
+      //   await delay(1000);
+      // }
     } catch (error) {
       alert("Ошибка при создании заказа :(");
     }

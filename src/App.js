@@ -44,14 +44,13 @@ function App() {
 
         const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         await delay(1000);
-
         setIsLoading(false);
 
         setFavorites(localFavorites);
         setItems(items);
 
         setCartItems(localCart);
-        console.log("local card: ", localCart);
+        // console.log("local card: ", localCart);
 
         // setFavorites(localFavorites);
         // setItems(items);
@@ -64,7 +63,7 @@ function App() {
   }, []);
 
   const onAddToCart = (card) => {
-    const findItem = cartItems.find((item) => Number(item.parentId) === Number(card.id));
+    const findItem = cartItems.find((item) => Number(item.id) === Number(card.id));
     if (findItem) {
       setCartItems((prev) => prev.filter((item) => item.id !== card.id));
     } else {
@@ -102,7 +101,7 @@ function App() {
   React.useEffect(() => {
     try {
       localStorage.setItem("cart", JSON.stringify(cartItems));
-      console.log("Добавил в локал: ", cartItems);
+      // console.log("Добавил в локал: ", cartItems);
     } catch (e) {
       console.log(e);
     }
@@ -123,7 +122,8 @@ function App() {
   // };
 
   const onAddToFavorite = (arg) => {
-    if (!arg.favorites) {
+    console.log(arg);
+    if (!arg.isFavorite) {
       let localFavorites = localStorage.getItem("favorites") ? JSON.parse(localStorage.getItem("favorites")) : [];
 
       const newFavorites = [arg.id];
@@ -133,6 +133,7 @@ function App() {
     } else {
       let localFavorites = localStorage.getItem("favorites") ? JSON.parse(localStorage.getItem("favorites")) : [];
       localFavorites = localFavorites.filter((idx) => idx !== arg.id);
+      console.log(localFavorites);
       setFavorites(localFavorites);
       localStorage.setItem("favorites", JSON.stringify(localFavorites));
     }
@@ -163,7 +164,18 @@ function App() {
 
   return (
     <AppContext.Provider
-      value={{ items, cartItems, favorites, isItemAdded, onAddToFavorite, onAddToCart, setCartOpened, setCartItems }}
+      value={{
+        items,
+        cartItems,
+        searchValue,
+        favorites,
+        isLoading,
+        isItemAdded,
+        onAddToFavorite,
+        onAddToCart,
+        setCartOpened,
+        setCartItems,
+      }}
     >
       <div className="wrapper clear">
         <Header onClickCart={() => setCartOpened(true)} />
@@ -174,19 +186,19 @@ function App() {
             exact
             element={
               <Home
-                items={items}
-                cartItems={cartItems}
-                searchValue={searchValue}
-                setsearchValue={setsearchValue}
-                onChangeSearchItem={onChangeSearchItem}
-                onAddToFavorite={onAddToFavorite}
-                onAddToCart={onAddToCart}
-                isLoading={isLoading}
+              // items={items}
+              // cartItems={cartItems}
+              // searchValue={searchValue}
+              // setsearchValue={setsearchValue}
+              // onChangeSearchItem={onChangeSearchItem}
+              // onAddToFavorite={onAddToFavorite}
+              // onAddToCart={onAddToCart}
+              // isLoading={isLoading}
               />
             }
           />
 
-          <Route path="/favorites" exact element={<Favorites />} />
+          <Route path="/favorites" exact element={<Favorites items={items} />} />
           <Route path="/orders" exact element={<Orders />} />
         </Routes>
 
