@@ -1,10 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-// import axios from "axios";
 
+import AppContext from "./context";
 import Header from "./components/Header";
 import RightSide from "./components/RightSide";
-import AppContext from "./context";
 
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
@@ -18,7 +17,6 @@ function App() {
   let temp = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [];
   const [cartItems, setCartItems] = React.useState(temp);
 
-  // const [favorites, setFavorites] = React.useState([]);
   const localFavorites = localStorage.getItem("favorites") ? JSON.parse(localStorage.getItem("favorites")) : [];
   const [favorites, setFavorites] = React.useState(localFavorites);
 
@@ -48,12 +46,7 @@ function App() {
 
         setFavorites(localFavorites);
         setItems(items);
-
         setCartItems(localCart);
-        // console.log("local card: ", localCart);
-
-        // setFavorites(localFavorites);
-        // setItems(items);
       } catch (error) {
         alert("Ошибка при запросе данных :(");
       }
@@ -191,14 +184,7 @@ function App() {
             exact
             element={
               <Home
-              // items={items}
-              // cartItems={cartItems}
-              // searchValue={searchValue}
-              // setsearchValue={setsearchValue}
               // onChangeSearchItem={onChangeSearchItem}
-              // onAddToFavorite={onAddToFavorite}
-              // onAddToCart={onAddToCart}
-              // isLoading={isLoading}
               />
             }
           />

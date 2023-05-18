@@ -5,13 +5,9 @@ import AppContext from "../../context";
 
 import styles from "./Card.module.scss";
 
-function Card({ item, isFavorite, added, onPlus, loading = false }) {
+function Card({ item, isFavorite, onFavorite, added, onPlus, loading = false }) {
   // function Card({ id, title, imgUrl, price, onFavorite, onPlus, favorited = false, loading = false }) {
-  const { isItemAdded, onFavorite, onAddToFavorite } = React.useContext(AppContext);
-  // const [isFavorite, setIsFavorite] = React.useState(favorited);
-
-  // const obj = { id, parentId: id, title, imgUrl, price };
-
+  // const { onAddToFavorite } = React.useContext(AppContext);
   const { id, price, title, imgUrl } = item;
 
   const onClickPlus = () => {
@@ -19,8 +15,7 @@ function Card({ item, isFavorite, added, onPlus, loading = false }) {
   };
 
   const onClickFavorite = () => {
-    onAddToFavorite({ id, title, imgUrl, isFavorite });
-    // setIsFavorite(!isFavorite);
+    onFavorite({ id, title, imgUrl, isFavorite });
   };
 
   return (
@@ -42,7 +37,7 @@ function Card({ item, isFavorite, added, onPlus, loading = false }) {
         </ContentLoader>
       ) : (
         <>
-          {onAddToFavorite && (
+          {onFavorite && (
             <div className={styles.favorite} onClick={onClickFavorite}>
               <img src={isFavorite ? "./img/liked.svg" : "./img/unliked.svg"} alt="unliked" />
             </div>

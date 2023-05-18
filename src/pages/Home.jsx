@@ -1,9 +1,9 @@
 import React from "react";
+import ContentLoader from "react-content-loader";
 
 import AppContext from "../context";
 import Card from "../components/Card";
 
-import ContentLoader from "react-content-loader";
 import styles from "../components/Card/Card.module.scss";
 
 function Home() {
@@ -21,9 +21,6 @@ function Home() {
 
   const renderItems = () => {
     const filteredItems = items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase()));
-    // return (isLoading ? [...Array(8)] : filteredItems).map((item, index) => (
-
-    // const isLoading = true;
 
     return isLoading ? (
       <div className="d-flex flex-wrap">

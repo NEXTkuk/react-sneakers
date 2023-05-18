@@ -5,7 +5,7 @@ import Card from "../components/Card";
 import AppContext from "../context";
 
 function Favorites() {
-  const { items, favorites, cartItems } = React.useContext(AppContext);
+  const { items, favorites, cartItems, onAddToFavorite } = React.useContext(AppContext);
 
   return (
     <div className="content p-40">
@@ -32,7 +32,13 @@ function Favorites() {
           {items.map(
             (item) =>
               favorites.includes(item.id) && (
-                <Card key={item.id} item={item} isFavorite cartItem={cartItems.find((i) => i.id === item.id)} />
+                <Card
+                  key={item.id}
+                  item={item}
+                  isFavorite
+                  onFavorite={(obj) => onAddToFavorite(obj)}
+                  cartItem={cartItems.find((i) => i.id === item.id)}
+                />
               )
           )}
         </div>
