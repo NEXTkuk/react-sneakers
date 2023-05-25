@@ -1,26 +1,26 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-import AppContext from "./context";
-import Header from "./components/Header";
-import RightSide from "./components/RightSide";
+import AppContext from './context';
+import Header from './components/Header';
+import RightSide from './components/RightSide';
 
-import Home from "./pages/Home";
-import Favorites from "./pages/Favorites";
-import Orders from "./pages/Orders";
+import Home from './pages/Home';
+import Favorites from './pages/Favorites';
+import Orders from './pages/Orders';
 
-import get_items from "./data/items";
+import get_items from './data/items';
 
 function App() {
   const [items, setItems] = React.useState([]);
 
-  let temp = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [];
+  let temp = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
   const [cartItems, setCartItems] = React.useState(temp);
 
-  const localFavorites = localStorage.getItem("favorites") ? JSON.parse(localStorage.getItem("favorites")) : [];
+  const localFavorites = localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : [];
   const [favorites, setFavorites] = React.useState(localFavorites);
 
-  const [searchValue, setsearchValue] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState('');
   const [cartOpened, setCartOpened] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -37,18 +37,16 @@ function App() {
         // setItems(itemsResponse.data);
 
         const items = get_items();
-        const localCart = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : [];
-        const localFavorites = localStorage.getItem("favorites") ? JSON.parse(localStorage.getItem("favorites")) : [];
+        const localCart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+        const localFavorites = localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : [];
 
-        // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        // await delay(500);
         setIsLoading(false);
 
         setFavorites(localFavorites);
         setItems(items);
         setCartItems(localCart);
       } catch (error) {
-        alert("Ошибка при запросе данных :(");
+        alert('Ошибка при запросе данных :(');
       }
     }
 
@@ -64,36 +62,9 @@ function App() {
     }
   };
 
-  // const onAddToCart = async (obj) => {
-  //   try {
-  //     const findItem = cartItems.find((item) => Number(item.parentId) === Number(obj.id));
-  //     if (findItem) {
-  //       setCartItems((prev) => prev.filter((item) => Number(item.parentId) !== Number(obj.id)));
-  //       await axios.delete(`https://642d4369bf8cbecdb40169ba.mockapi.io/cart/${obj.id}`);
-  //     } else {
-  //       setCartItems((prev) => [...prev, obj]);
-  //       const { data } = await axios.post("https://642d4369bf8cbecdb40169ba.mockapi.io/cart", obj);
-  //       setCartItems((prev) =>
-  //         prev.map((item) => {
-  //           if (item.parentId === data.parentId) {
-  //             return {
-  //               ...item,
-  //               id: data.id,
-  //             };
-  //           }
-  //           return item;
-  //         })
-  //       );
-  //     }
-  //   } catch (error) {
-  //     alert("Ошибка при добавлении в корзину :(");
-  //     console.error(error);
-  //   }
-  // };
-
   React.useEffect(() => {
     try {
-      localStorage.setItem("cart", JSON.stringify(cartItems));
+      localStorage.setItem('cart', JSON.stringify(cartItems));
       // console.log("Добавил в локал: ", cartItems);
     } catch (e) {
       console.log(e);
@@ -115,40 +86,23 @@ function App() {
   // };
 
   const onAddToFavorite = (arg) => {
-    console.log(arg);
     if (!arg.isFavorite) {
-      let localFavorites = localStorage.getItem("favorites") ? JSON.parse(localStorage.getItem("favorites")) : [];
+      let localFavorites = localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : [];
 
       const newFavorites = [arg.id];
       localFavorites = [...localFavorites, ...newFavorites];
       setFavorites(localFavorites);
-      localStorage.setItem("favorites", JSON.stringify(localFavorites));
+      localStorage.setItem('favorites', JSON.stringify(localFavorites));
     } else {
-      let localFavorites = localStorage.getItem("favorites") ? JSON.parse(localStorage.getItem("favorites")) : [];
+      let localFavorites = localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : [];
       localFavorites = localFavorites.filter((idx) => idx !== arg.id);
-      console.log(localFavorites);
       setFavorites(localFavorites);
-      localStorage.setItem("favorites", JSON.stringify(localFavorites));
+      localStorage.setItem('favorites', JSON.stringify(localFavorites));
     }
   };
 
-  // const onAddToFavorite = async (obj) => {
-  //   try {
-  //     if (favorites.find((favObj) => Number(favObj.id) === Number(obj.id))) {
-  //       axios.delete(`https://6436b5c23e4d2b4a12d99c95.mockapi.io/favorites/${obj.id}`);
-  //       setFavorites((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)));
-  //     } else {
-  //       const { data } = await axios.post("https://6436b5c23e4d2b4a12d99c95.mockapi.io/favorites", obj);
-  //       setFavorites((prev) => [...prev, data]);
-  //     }
-  //   } catch (error) {
-  //     alert("Не удалось добавить в фавориты");
-  //     console.error(error);
-  //   }
-  // };
-
   const onChangeSearchItem = (event) => {
-    setsearchValue(event.target.value);
+    setSearchValue(event.target.value);
   };
 
   const isItemAdded = (id) => {
@@ -168,19 +122,21 @@ function App() {
         onAddToCart,
         setCartOpened,
         setCartItems,
+        setSearchValue,
+        onChangeSearchItem,
       }}
     >
-      <div className="wrapper clear">
+      <div className='wrapper clear'>
         <Header
           onClickCart={() => {
             setCartOpened(true);
-            document.body.style.overflow = "hidden";
+            document.body.style.overflow = 'hidden';
           }}
         />
 
         <Routes>
           <Route
-            path="/"
+            path='/'
             exact
             element={
               <Home
@@ -189,15 +145,15 @@ function App() {
             }
           />
 
-          <Route path="/favorites" exact element={<Favorites items={items} />} />
-          <Route path="/orders" exact element={<Orders />} />
+          <Route path='/favorites' exact element={<Favorites items={items} />} />
+          <Route path='/orders' exact element={<Orders />} />
         </Routes>
 
         <RightSide
           items={cartItems}
           onClose={() => {
             setCartOpened(false);
-            document.body.style.overflow = "visible";
+            document.body.style.overflow = 'visible';
           }}
           onRemove={(id) => onRemoveItem(id)}
           opened={cartOpened}
