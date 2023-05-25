@@ -67,7 +67,7 @@ function Home() {
         <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : 'Все кроссовки'}</h1>
         <div className='search-block d-flex'>
           {searchValue && (
-            <img onClick={() => setSearchValue('')} className='clear cu-p' src='/img/btn-remove.svg' alt='Clear' />
+            <img onClick={() => setSearchValue('')} className='clear cu-p' src='./img/btn-remove.svg' alt='Clear' />
           )}
           <input onChange={onChangeSearchItem} value={searchValue} placeholder='Поиск ...' />
         </div>
