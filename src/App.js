@@ -36,6 +36,19 @@ function App() {
         // setFavorites(favoritesResponse.data);
         // setItems(itemsResponse.data);
 
+        // Fix LocalStorage GitHub
+        try {
+          const currentDomain = window.location.pathname;
+          const LsDomain = localStorage.getItem('domain');
+
+          if (currentDomain !== LsDomain) {
+            localStorage.clear();
+            localStorage.setItem('domain', currentDomain);
+          }
+        } catch {
+          console.log('Ошибка с LS');
+        }
+
         const items = get_items();
         const localCart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
         const localFavorites = localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : [];
